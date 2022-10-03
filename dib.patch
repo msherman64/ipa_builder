@@ -1,0 +1,32 @@
+From 73b024373664ded673b1325fb3a0b1d88cb90b18 Mon Sep 17 00:00:00 2001
+From: jgupta <jayadityagupta11@gmail.com>
+Date: Mon, 25 Jul 2022 14:46:10 +0200
+Subject: [PATCH] Fix issue in extract image
+
+lsblk gives empty output for FSTYPE, LABEL, GUID..
+the fix is to use blkid.
+
+Closes-Bug: 1974350
+Change-Id: I3b460c6dd9caa519c55327c5bd4b7e4585a8bd22
+---
+ diskimage_builder/elements/sysprep/bin/extract-image | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/diskimage_builder/elements/sysprep/bin/extract-image b/diskimage_builder/elements/sysprep/bin/extract-image
+index c460dccf7..cc4173e50 100755
+--- a/diskimage_builder/elements/sysprep/bin/extract-image
++++ b/diskimage_builder/elements/sysprep/bin/extract-image
+@@ -97,9 +97,9 @@ function extract_image() {
+             fi
+ 
+             for LOOPDEV in ${LOOPDEVS}; do
+-                fstype=$(lsblk --all --nodeps --noheadings --output FSTYPE $LOOPDEV)
+-                label=$(lsblk --all --nodeps --noheadings --output LABEL $LOOPDEV)
+-                part_type=$(lsblk --all --nodeps --noheadings --output PARTTYPE $LOOPDEV)
++                fstype=$(sudo blkid -o value -s TYPE -p "${LOOPDEV}" 2>/dev/null)
++                label=$(sudo blkid -o value -s LABEL -p "${LOOPDEV}" 2>/dev/null)
++                part_type=$(sudo blkid -o value -s PART_ENTRY_TYPE -p "${LOOPDEV}" 2>/dev/null)
+ 
+                 if [ -z "${fstype}" ]; then
+                     # Ignore block device with no filesystem type
+

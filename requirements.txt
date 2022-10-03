@@ -1,0 +1,5 @@
+#git+https://opendev.org/openstack/diskimage-builder.git@73b024373664ded673b1325fb3a0b1d88cb90b18
+#git+https://opendev.org/openstack/ironic-python-agent-builder.git@5.0.0a
+
+diskimage-builder
+ironic-python-agent-builder
