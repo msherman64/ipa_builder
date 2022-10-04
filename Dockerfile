@@ -17,4 +17,5 @@ RUN patch /usr/local/lib/python3.10/site-packages/diskimage_builder/elements/sys
 COPY requirements.txt .
 RUN pip install  -r requirements.txt
 
-ENV ELEMENTS_PATH=/usr/local/share/ironic-python-agent-builder/dib
+COPY dib /usr/local/src/dib
+ENV ELEMENTS_PATH=/usr/local/share/ironic-python-agent-builder/dib:/usr/local/src/dib
