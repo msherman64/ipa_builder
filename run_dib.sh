@@ -1,6 +1,12 @@
 #!/bin/bash
 
 image_name="ipa-centos-8stream-aarch64-$(date -I)"
+echo "setting image name to ${image_name}"
+
+IRONIC_BRANCH="stable/xena"
+BUILD_ARCH="aarch64"
+DISTRO_NAME="centos"
+DIB_RELEASE="8-stream"
 
 docker run \
      --rm \
@@ -13,13 +19,13 @@ docker run \
      --env DIB_DEBUG_TRACE=1 \
      --env TMPDIR=/opt/dib/tmp \
      --env DIB_IMAGE_CACHE=/opt/dib/image_cache \
-     --env DIB_REPOREF_ironic_python_agent=stable/xena \
-     --env DIB_REPOREF_ironic_lib=stable/xena \
-     --env DIB_REPOREF_requirements=stable/xena \
-     --env ARCH=aarch64 \
+     --env DIB_REPOREF_ironic_python_agent="${IRONIC_BRANCH}" \
+     --env DIB_REPOREF_ironic_lib="${IRONIC_BRANCH}" \
+     --env DIB_REPOREF_requirements="${IRONIC_BRANCH}" \
+     --env ARCH=${BUILD_ARCH} \
      --env YUM=dnf \
-     --env DISTRO_name=centos \
-     --env DIB_RELEASE=8-stream \
+     --env DISTRO_name="${DISTRO_NAME}" \
+     --env DIB_RELEASE="${DIB_RELEASE}" \
      ipa_builder:latest \
      disk-image-create \
      -o /opt/dib/output/${image_name} \
