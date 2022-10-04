@@ -1,0 +1,6 @@
+firmware-qlogic:
+  when:
+    - DISTRO_NAME = debian
+firmware-bnx2x:
+  when:
+    - DISTRO_NAME = debian
